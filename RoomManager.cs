@@ -107,7 +107,6 @@ public class RoomManager : MonoBehaviour
         Vector3 b2 = new Vector3(b.x + size_b.x, 0, b.z + size_b.z);
 
         return a.x < b2.x && a2.x > b.x && a.z < b2.z && a2.z > b.z;
-        //return a.x <= b.x + size_b.x && a.x + size_a.x >= b.x && a.z <= b.z + size_b.z && a.z + size_a.z >= b.z;
     }
 
     void FindNearestRooms()
@@ -142,7 +141,7 @@ public class RoomManager : MonoBehaviour
     }
 
 
-    // algo récursif de parcours des nearestRoom pour ne pas créer de boucles : permet de rendre toutes les salles du donjons accessibles depuis n'importe quelle salle 
+    // algo rÃ©cursif de parcours des nearestRoom pour ne pas crÃ©er de boucles : permet de rendre toutes les salles du donjons accessibles depuis n'importe quelle salle 
     bool RoomConnected(Room r1, Room r2)
     {
         if (r2.nearestRoom == null)
