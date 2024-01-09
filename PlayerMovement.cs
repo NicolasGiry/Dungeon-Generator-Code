@@ -14,11 +14,7 @@ public class PlayerMovement : MonoBehaviour
     public CharacterController characterController;
     public GameObject pin;
     public RawImage miniMap;
-    void Awake()
-    {
-    }
 
-    // Update is called once per frame
     void Update()
     {
         if (canMove)
@@ -42,7 +38,6 @@ public class PlayerMovement : MonoBehaviour
         input += transform.forward * y;
         input = Vector3.ClampMagnitude(input, 1f);
 
-        //cam.transform.Translate(input * movementSpeed * Time.deltaTime, Space.World);
         characterController.Move(input * movementSpeed * Time.deltaTime);
     }
 
@@ -55,7 +50,6 @@ public class PlayerMovement : MonoBehaviour
 
         transform.localRotation = Quaternion.Euler(0, look.x, 0);
         cam.transform.localRotation = Quaternion.Euler(-look.y, 0, 0);
-        //cam.transform.localRotation = Quaternion.Euler(-look.y, 0, 0);
     }
 
     public void ExploreDungeon()
@@ -67,9 +61,6 @@ public class PlayerMovement : MonoBehaviour
         if (SceneManager.GetActiveScene().buildIndex == 2)
         {
             playerPos = roomManager.rooms[0].GetCenter();
-        } else if (SceneManager.GetActiveScene().buildIndex == 1)
-        {
-            //playerPos = 
         }
 
         characterController.Move(playerPos - new Vector3(0, 0.5f, 0) - transform.position);
