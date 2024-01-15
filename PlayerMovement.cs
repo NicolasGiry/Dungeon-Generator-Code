@@ -6,7 +6,7 @@ public class PlayerMovement : MonoBehaviour
 {
     Vector2 look;
     public float mouseSensitivity = 3f;
-    public float movementSpeed = 2f;
+    public float movementSpeed = 5f;
     public Camera cam;
     public Vector3 playerPos;
     public RoomManager roomManager;
@@ -14,11 +14,22 @@ public class PlayerMovement : MonoBehaviour
     public CharacterController characterController;
     public GameObject pin;
     public RawImage miniMap;
+    void Awake()
+    {
+    }
 
+    // Update is called once per frame
     void Update()
     {
         if (canMove)
         {
+            if (Input.GetKey(KeyCode.LeftShift))
+            {
+                movementSpeed = 10f;
+            } else
+            {
+                movementSpeed = 5f;
+            }
             UpdateMovement();
             UpdateLook();
             if (Input.GetKeyDown(KeyCode.Escape))
@@ -61,6 +72,9 @@ public class PlayerMovement : MonoBehaviour
         if (SceneManager.GetActiveScene().buildIndex == 2)
         {
             playerPos = roomManager.rooms[0].GetCenter();
+        } else if (SceneManager.GetActiveScene().buildIndex == 1)
+        {
+            playerPos = new Vector3(-1, -1, 0);
         }
 
         characterController.Move(playerPos - new Vector3(0, 0.5f, 0) - transform.position);
