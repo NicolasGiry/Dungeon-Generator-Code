@@ -8,9 +8,13 @@ public class TileManager : MonoBehaviour
     public int rows, columns;
     public GameObject tilePref;
     public int iterationMax;
+    public int seed;
+    bool personnalSeed;
 
     public Slider sliderIt;
     public TextMeshProUGUI itText;
+    public TMP_InputField seedText;
+    public Toggle personnalSeedCheck;
     void Awake()
     {
         sliderIt.onValueChanged.AddListener((v) =>
@@ -19,12 +23,29 @@ public class TileManager : MonoBehaviour
             iterationMax = (int) v;
         });
 
+        personnalSeed = false;
+        seedText.interactable = false;
+
+        seedText.characterLimit = 9;
+
         tiles = new Tile[rows * columns];
+        
+    }
+
+    private void Start()
+    {
         Init(1);
+    }
+
+    private void Update()
+    {
+        personnalSeed = personnalSeedCheck.isOn;
+        seedText.interactable = personnalSeed;
     }
 
     public void Init(int firstCall = 0)
     {
+        GenerateSeed();
         int cnt = 0;
         for (int i = 0; i < rows; i++)
         {
@@ -39,8 +60,21 @@ public class TileManager : MonoBehaviour
                 cnt++;
             }
         }
-
         CreateMap();
+    }
+
+    private void GenerateSeed()
+    {
+        if (!personnalSeed)
+        {
+            seed = Random.Range(0, 999999999);
+            Random.seed = seed;
+            seedText.text = seed.ToString();
+        }
+        else
+        {
+            Random.seed = System.Convert.ToInt32(seedText.text);
+        }
     }
 
     public void CreateMap()
