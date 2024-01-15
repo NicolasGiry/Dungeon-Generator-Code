@@ -6,27 +6,35 @@ public class Tile : MonoBehaviour
     bool etatSuivant;
     MeshRenderer meshRenderer;
     int cnt;
+    Tile[] voisins;
     void Awake()
     {
         meshRenderer = gameObject.GetComponent<MeshRenderer>();
+        voisins = new Tile[8];
+    }
+
+    private void Start()
+    {
+        Vector3[] dir = { new Vector3(1.0f, 0.0f, 0.0f), new Vector3(1, 0, 1), new Vector3(1, 0, -1), 
+            new Vector3(0, 0, 1), new Vector3(0, 0, -1), new Vector3(-1, 0, 0), new Vector3(-1, 0, 1), new Vector3(-1, 0, -1) };
+
+        for (int i = 0; i < 8; i++)
+        {
+            if (Physics.Raycast(transform.position, dir[i], out RaycastHit hit, 100f) && hit.collider.CompareTag("Tile"))
+            {
+                voisins[i] = hit.transform.gameObject.GetComponent<Tile>();
+            }
+        }
     }
 
     public void TrouverEtatSuivant()
     {
         cnt = 0;
-
-        CheckVoisins(new Vector3(1.0f, 0.0f, 0.0f));
-        CheckVoisins(new Vector3(1, 0, 1));
-        CheckVoisins(new Vector3(1, 0, -1));
-        CheckVoisins(new Vector3(0, 0, 1));
-        CheckVoisins(new Vector3(0, 0, -1));
-        CheckVoisins(new Vector3(-1, 0, 0));
-        CheckVoisins(new Vector3(-1, 0, 1));
-        CheckVoisins(new Vector3(-1, 0, -1));
+        CheckVoisins();
 
         if (cnt == 4)
         {
-            // égalité : on détermine aléatoirement
+            // Ã©galitÃ© : on dÃ©termine alÃ©atoirement
             int e = Random.Range(0, 2);
             etatSuivant = e == 0;
         }
@@ -45,6 +53,17 @@ public class Tile : MonoBehaviour
                 cnt++;
             }
         } 
+    }
+
+    void CheckVoisins()
+    {
+        for (int i = 0; i < 8; i++)
+        {
+            if (voisins[i] != null && voisins[i].etat)
+            {
+                cnt++;
+            }
+        }
     }
 
     public void ChangerEtat()
