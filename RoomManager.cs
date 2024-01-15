@@ -12,6 +12,8 @@ public class RoomManager : MonoBehaviour
     public GameObject tilePref;
     public float CorridorWidth = 1f;
     GameObject[] tiles;
+    public int seed;
+    bool personnalSeed;
 
     public Slider sliderCorridorWidth;
     public TextMeshProUGUI corridorWidthText;
@@ -24,6 +26,9 @@ public class RoomManager : MonoBehaviour
 
     public Slider sliderMaxSize;
     public TextMeshProUGUI maxSizeText;
+
+    public TMP_InputField seedText;
+    public Toggle personnalSeedCheck;
 
     public PlayerMovement playerMovement;
 
@@ -53,12 +58,32 @@ public class RoomManager : MonoBehaviour
             maxSizeText.text = v.ToString("00");
             maxSize = (int) v;
         });
+
+        personnalSeed = false;
+        seedText.interactable = false;
+        seedText.characterLimit = 9;
+
         Init();
+    }
+
+    private void GenerateSeed()
+    {
+        if (!personnalSeed)
+        {
+            seed = Random.Range(0, 999999999);
+            Random.seed = seed;
+            seedText.text = seed.ToString();
+        }
+        else
+        {
+            Random.seed = System.Convert.ToInt32(seedText.text);
+        }
     }
 
     public void Init()
     {
         DestroyScene();
+        GenerateSeed();
         nbRooms = 0;
         rooms = new Room[maxRooms];
         for (int i = 0; i < maxRooms; i++)
@@ -82,6 +107,11 @@ public class RoomManager : MonoBehaviour
         FindNearestRooms();
         FillScene();
         CreateCorridors();
+    }
+    private void Update()
+    {
+        personnalSeed = personnalSeedCheck.isOn;
+        seedText.interactable = personnalSeed;
     }
 
     bool IsTouchingOtherRoom(Room room)
