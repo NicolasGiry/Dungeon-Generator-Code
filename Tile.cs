@@ -43,18 +43,7 @@ public class Tile : MonoBehaviour
             etatSuivant = cnt > 4;
         }
     }
-
-    void CheckVoisins(Vector3 dir)
-    {
-        if (Physics.Raycast(transform.position, dir, out RaycastHit hit, 100f))
-        {
-            if (hit.collider.CompareTag("Tile") && hit.collider.gameObject.GetComponent<Tile>().etat)
-            {
-                cnt++;
-            }
-        } 
-    }
-
+    
     void CheckVoisins()
     {
         for (int i = 0; i < 8; i++)
