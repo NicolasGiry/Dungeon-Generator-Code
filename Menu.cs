@@ -9,4 +9,11 @@ public class Menu : MonoBehaviour
     {
         SceneManager.LoadScene (numScene);
     }
+    private void Update()
+    {
+        if (SceneManager.GetActiveScene().buildIndex == 0 && Input.GetKeyDown(KeyCode.Escape))
+        {
+            Application.Quit();
+        }
+    }
 }
